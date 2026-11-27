@@ -1,0 +1,193 @@
+body {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  color: #111813;
+}
+
+.layout {
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url("background.avif");
+  background-size: cover;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 20px 40px;
+}
+
+.logo-img {
+  width: 90px;
+}
+
+.nav {
+  margin-left: auto;
+}
+
+.nav a {
+  margin: 0 14px;
+  color: white;
+  font-weight: 1000;
+  font-size: 20px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav a:hover {
+  color: #2bee6c;
+}
+
+.nav a.active {
+  color: #13ec5b;
+}
+
+/* MAIN */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 60px 40px;
+}
+
+.intro h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 80px;
+  text-align: center;
+  color: #13ec5b;
+}
+
+.intro p {
+  text-align: center;
+  font-size: 28px;
+  color: white;
+}
+
+/* GRID */
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-top: 60px;
+}
+
+/* GLASS */
+.glass {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+}
+
+/* INFO */
+.info-box {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+/* POLL */
+.poll-container {
+  padding: 20px;
+}
+
+.poll-title {
+  font-weight: 800;
+}
+
+.poll-title span {
+  display: block;
+  font-size: 14px;
+  color: #61896f;
+}
+
+.poll-options {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.poll-btn {
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: white;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.poll-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(46,238,108,0.35);
+}
+
+/* FORM */
+.form-card {
+  background: white;
+  padding: 32px;
+  border-radius: 18px;
+}
+
+label {
+  display: block;
+  margin-top: 16px;
+  font-weight: 700;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.submit-btn {
+  width: 100%;
+  margin-top: 22px;
+  padding: 14px;
+  background: #2bee6c;
+  border: none;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.submit-btn:hover {
+  transform: scale(1.03);
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 40px;
+  color: white;
+}
+
+/* ANIMATIONS */
+.fade-in {
+  animation: fadeIn 1s ease forwards;
+}
+
+.slide-up {
+  animation: slideUp 1s ease forwards;
+}
+
+.delay {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px) }
+  to { opacity: 1; transform: translateY(0) }
+}

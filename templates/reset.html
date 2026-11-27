@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Set a New Password | Eco-Tracker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f4faf5; font-family: Arial, sans-serif; color: #173321; }
+    main { width: min(420px, calc(100% - 40px)); padding: 32px; background: white; border: 1px solid #dce9dd; border-radius: 18px; box-shadow: 0 16px 50px #164e2912; }
+    h1 { margin-top: 0; color: #168344; }
+    label { display: block; margin: 18px 0 8px; font-weight: 600; }
+    input { box-sizing: border-box; width: 100%; padding: 13px; border: 1px solid #cbd5ce; border-radius: 9px; font-size: 16px; }
+    button { margin-top: 18px; width: 100%; padding: 13px; border: 0; border-radius: 9px; background: #22a854; color: white; font-size: 16px; font-weight: 700; cursor: pointer; }
+    a { color: #168344; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Set a new password</h1>
+    <p>Choose a password with at least 8 characters.</p>
+    {% if error %}<p role="alert" class="form-message error">{{ error }}</p>{% endif %}
+    <form method="post" action="{{ url_for('reset_password', token=token) }}">
+      <label for="password">New password</label>
+      <input id="password" name="password" type="password" minlength="8" autocomplete="new-password" required>
+      <button type="submit">Update password</button>
+    </form>
+    <p><a href="{{ url_for('login') }}">Back to sign in</a></p>
+  </main>
+</body>
+</html>

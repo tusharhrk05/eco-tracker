@@ -1,0 +1,171 @@
+body {
+  font-family: Inter, sans-serif;
+  background: #f6f8f6;
+  margin: 0;
+}
+.layout {
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url("background.avif"); /* replace with your own image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.header {
+    display: flex;
+   align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+}
+
+.logo-img { 
+  width: 100px;
+  height: 100px;
+  object-fit: contain; }
+
+.main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 32px;
+}
+.page-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #22c55e;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.card {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #e2e8e2;
+}
+
+.card.banner {
+  grid-column: span 2;
+  background: #eafff1;
+  border-color: #b8f5cf;
+  font-weight: 600;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  font-weight: 800;
+  background: #2bee6c;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* SVG Gauge */
+.svg-gauge {
+  width: 260px;
+  margin: 20px auto;
+}
+
+#gaugeArc {
+  transition: stroke-dashoffset 1s ease, stroke 0.5s;
+}
+
+#needle {
+  transition: transform 0.6s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* Value */
+.co2-value {
+  text-align: center;
+}
+
+.co2-value span:first-child {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.unit {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* Limit bar */
+.limit-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.progress {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+#progress-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+}
+
+/* Legend */
+.legend-item {
+  margin-bottom: 12px;
+}
+
+.legend-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  margin-top: 4px;
+}
+
+.legend-bar div {
+  height: 100%;
+  width: 0%;
+  background: #22c55e;
+  border-radius: 6px;
+  transition: width 0.6s ease;
+}
+
+/* Tips */
+.tips li {
+  margin-bottom: 8px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 32px;
+  font-size: 13px;
+  color: #ffffff;
+}

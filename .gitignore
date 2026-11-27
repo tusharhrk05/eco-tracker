@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+usage.db
+usage.db-shm
+usage.db-wal
+model.pkl
+.verify-*.db
+.verify-*.db-shm
+.verify-*.db-wal

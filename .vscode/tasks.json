@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Prepare Eco-Tracker environment",
+      "type": "shell",
+      "command": "$candidates = @((Get-Command py -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source -ErrorAction SilentlyContinue), (Get-Command python -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source -ErrorAction SilentlyContinue), (Join-Path $env:LOCALAPPDATA 'Python\\bin\\python.exe')); $pythonExe = $null; foreach ($candidate in $candidates) { if ($candidate -and (Test-Path $candidate)) { $reported = & $candidate --version 2>&1; if ($LASTEXITCODE -eq 0 -and \"$reported\" -match '^Python 3\\.(1[1-9]|[2-9]\\d)\\.') { $pythonExe = $candidate; break } } }; if (-not $pythonExe) { Write-Error 'Install Python 3.11 or newer, then run this task again.'; exit 1 }; if (-not (Test-Path '.venv\\Scripts\\python.exe')) { & $pythonExe -m venv .venv; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE } }; & '.venv\\Scripts\\python.exe' -m pip install --upgrade pip; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; & '.venv\\Scripts\\python.exe' -m pip install -r requirements.txt; exit $LASTEXITCODE",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "powershell.exe",
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command"]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monthly Carbon Report | Eco-Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light; --green:#16834a; --green-soft:#edfaf1; --ink:#193326; --muted:#68766e; --line:#e0e9e2; --red:#b42318; --red-soft:#fff1ef; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#f5f8f5; color:var(--ink); font-family:Inter,system-ui,sans-serif; }
+    .navbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; padding:16px clamp(18px,5vw,64px); background:white; border-bottom:1px solid var(--line); }
+    .logo { color:var(--green); font-size:21px; font-weight:800; }
+    .nav { display:flex; flex-wrap:wrap; gap:8px; }
+    .nav a { padding:9px 12px; border-radius:9px; color:#385344; text-decoration:none; font-size:14px; }
+    .nav a:hover,.nav a.active { background:var(--green-soft); color:var(--green); }
+    .header { padding:36px 20px 26px; text-align:center; background:linear-gradient(135deg,#effaf2,#e8f5ec); }
+    .header h1 { margin:0; font-size:clamp(28px,4vw,40px); color:#176e3d; }
+    .header p { margin:10px 0 0; color:var(--muted); }
+    .container { width:min(1120px,calc(100% - 32px)); margin:24px auto 56px; }
+    .month-picker { display:flex; justify-content:flex-end; align-items:center; gap:10px; margin:0 0 18px; }
+    input[type=month] { padding:9px 12px; border:1px solid var(--line); border-radius:9px; background:white; font:inherit; }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px; margin:18px 0; }
+    .card,.panel { background:white; border:1px solid var(--line); border-radius:16px; box-shadow:0 6px 24px #12351c08; }
+    .card { padding:20px; }
+    .card h2,.card h3 { margin:0; font-size:14px; color:var(--muted); font-weight:600; }
+    .value { margin:10px 0 0; font-size:30px; line-height:1.15; font-weight:800; }
+    .value small { font-size:15px; font-weight:600; color:var(--muted); }
+    .status-card.safe { background:var(--green-soft); border-color:#c8ebd2; }
+    .status-card.unsafe { background:var(--red-soft); border-color:#f1c4bd; }
+    .status { display:inline-flex; margin-top:10px; padding:5px 9px; border-radius:999px; font-size:12px; font-weight:800; letter-spacing:.04em; }
+    .safe .status { background:#d2f2dc; color:#176e3d; }
+    .unsafe .status { background:#fbdad5; color:var(--red); }
+    .progress-track { height:12px; margin:18px 0 8px; overflow:hidden; border-radius:999px; background:#e8eee9; }
+    .progress-fill { height:100%; border-radius:inherit; background:#22a65b; }
+    .progress-fill.unsafe { background:#d92d20; }
+    .subtext { margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.55; }
+    .panel { margin-top:20px; padding:22px; }
+    .panel h2 { margin:0 0 5px; font-size:19px; }
+    .panel-intro { margin:0 0 16px; color:var(--muted); font-size:13px; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:680px; }
+    th,td { padding:12px 10px; border-bottom:1px solid #edf1ed; text-align:left; font-size:13px; }
+    th { color:#65736a; font-size:11px; letter-spacing:.04em; text-transform:uppercase; }
+    tr.unsafe-row { background:#fff7f6; }
+    .badge { display:inline-block; padding:5px 8px; border-radius:999px; background:#eef2ef; color:#526258; font-size:11px; font-weight:700; white-space:nowrap; }
+    .badge.unsafe { background:#fee4e2; color:var(--red); }
+    .badge.sample { background:#fff2cc; color:#805b00; }
+    .plan { border-left:4px solid var(--red); }
+    .plan.safe-plan { border-left-color:var(--green); }
+    .plan-item { margin:10px 0 0; padding:12px 14px; border-radius:10px; background:#f8faf8; line-height:1.6; }
+    .formula { margin-top:20px; padding:17px 20px; border-radius:14px; background:#eef4ef; color:#42584a; font-size:13px; line-height:1.7; }
+    .footer { padding:22px; text-align:center; color:var(--muted); font-size:12px; }
+    @media (max-width:760px) { .cards { grid-template-columns:1fr; } .navbar { justify-content:center; } .month-picker { justify-content:center; } .panel { padding:16px; } }
+  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app-theme.css') }}">
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">🌱 EcoTracker</div>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/m">Today</a>
+      <a href="/history">History</a>
+      <a href="/analytics">Analytics</a>
+      <a href="{{ url_for('monthly_report') }}" class="active">Monthly report</a>
+      <a href="/prediction">Prediction</a>
+    </nav>
+  </div>
+
+  <header class="header">
+    <h1>Monthly Carbon Report</h1>
+    <p>Estimated app screen-time emissions compared with your {{ monthly_limit_kg }} kg monthly limit</p>
+  </header>
+
+  {% include "sample_notice.html" %}
+
+  <main class="container">
+    <form class="month-picker" method="get" action="{{ url_for('monthly_report') }}">
+      <label for="month">Report month</label>
+      <input id="month" name="month" type="month" value="{{ selected_month }}">
+      <button type="submit">View report</button>
+    </form>
+
+    <section class="cards" aria-label="Monthly totals">
+      <article class="card status-card {{ 'unsafe' if over_monthly_limit else 'safe' }}">
+        <h2>Estimated CO₂e this month</h2>
+        <div class="value">{{ month_co2_kg }} <small>kg</small></div>
+        <span class="status">{{ 'UNSAFE · LIMIT EXCEEDED' if over_monthly_limit else 'WITHIN MONTHLY LIMIT' }}</span>
+        <div class="progress-track" aria-label="Monthly carbon limit progress">
+          <div class="progress-fill {{ 'unsafe' if over_monthly_limit else '' }}" style="width:{{ progress_pct|round(1) }}%"></div>
+        </div>
+        <p class="subtext">
+          {% if over_monthly_limit %}{{ excess_kg|round(2) }} kg over the limit. Reduce app screen time to get below {{ monthly_limit_kg }} kg.{% else %}{{ remaining_kg|round(2) }} kg of the monthly allowance remains.{% endif %}
+        </p>
+      </article>
+      <article class="card">
+        <h2>Monthly limit</h2>
+        <div class="value">{{ monthly_limit_kg }} <small>kg CO₂e</small></div>
+        <p class="subtext">The limit you set for one calendar month.</p>
+      </article>
+      <article class="card">
+        <h2>Total app screen time</h2>
+        <div class="value">{{ (month_hours / 24)|round(1) }} <small>app-hours</small></div>
+        <p class="subtext">Sum of time recorded for each app in this month.</p>
+      </article>
+      <article class="card status-card {{ 'unsafe' if projection_over_limit else 'safe' if projection_available else '' }}">
+        <h2>Projected month-end total</h2>
+        <div class="value">{{ projected_month_kg if projection_available else '—' }} <small>kg CO₂e</small></div>
+        <span class="status">{{ projection_status }}</span>
+        <p class="subtext">{{ projection_note }}</p>
+        {% if sample_record_count %}<p class="subtext">Includes {{ sample_record_count }} sample records in this report.</p>{% endif %}
+      </article>
+    </section>
+
+    {% if sample_month_unsafe %}
+    <section class="panel status-card unsafe" role="alert">
+      <h2>Unsafe sample month</h2>
+      <p class="subtext">The synthetic sample records alone estimate {{ sample_month_co2_kg }} kg CO₂e, above the {{ monthly_limit_kg }} kg limit. Sample app rows are marked below so they are easy to distinguish.</p>
+    </section>
+    {% endif %}
+
+    {% if reduction_plan %}
+    <section class="panel plan {{ 'safe-plan' if not over_monthly_limit else '' }}">
+      <h2>{{ 'App time to reduce' if over_monthly_limit else 'Largest carbon contributor' }}</h2>
+      <p class="panel-intro">{{ 'Recommended screen-time cuts to bring this month under the limit:' if over_monthly_limit else 'Your monthly estimate is within the limit. This is the largest app contributor to reduce further:' }}</p>
+      {% for item in reduction_plan %}
+      <div class="plan-item">
+        <strong>{{ item.app }}</strong>: reduce about {{ item.hours_to_reduce|round(1) }} hours this month
+        ({{ item.hours_per_day|round(1) }} hours/day) to save about {{ item.kg_saved|round(2) }} kg CO₂e.
+      </div>
+      {% endfor %}
+    </section>
+    {% endif %}
+
+    <section class="panel">
+      <h2>App contribution</h2>
+      <p class="panel-intro">Apps are ranked by their estimated monthly CO₂e contribution.</p>
+      {% if app_totals %}
+      <div class="table-wrap"><table>
+        <thead><tr><th>App</th><th>Type</th><th>Screen time</th><th>Energy estimate</th><th>CO₂e</th><th>Share</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for item in app_totals %}
+          <tr>
+            <td>{{ item.app }}</td><td>{{ item.category }}</td><td>{{ item.hours|round(1) }} h</td>
+            <td>{{ item.energy_kwh|round(2) }} kWh</td><td>{{ item.co2_kg|round(2) }} kg</td>
+            <td>{{ item.share_pct|round(1) }}%</td>
+            <td><span class="badge {{ 'unsafe' if item.status.startswith('Unsafe') or item.status == 'High contributor' else '' }} {{ 'sample' if item.sample else '' }}">{{ item.status }}{% if item.sample %} · sample{% endif %}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table></div>
+      {% else %}<p class="subtext">No app screen time has been recorded for this month.</p>{% endif %}
+    </section>
+
+    <section class="panel">
+      <h2>Daily trend and limit crossing</h2>
+      <p class="panel-intro">The status changes to unsafe on the day the month-to-date total passes {{ monthly_limit_kg }} kg.</p>
+      {% if daily_report %}
+      <div class="table-wrap"><table>
+        <thead><tr><th>Date</th><th>Screen time</th><th>CO₂e that day</th><th>Month-to-date</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for item in daily_report %}
+          <tr class="{{ 'unsafe-row' if item.unsafe else '' }}">
+            <td>{{ item.date }}</td><td>{{ item.hours|round(1) }} h</td><td>{{ item.co2_kg|round(2) }} kg</td>
+            <td>{{ item.cumulative_kg }} kg</td>
+            <td><span class="badge {{ 'unsafe' if item.unsafe else '' }}">{{ item.status }}{% if item.sample %} · sample{% endif %}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table></div>
+      {% else %}<p class="subtext">No records are available for this month.</p>{% endif %}
+    </section>
+
+    <aside class="formula">
+      <strong>Calculation used</strong><br>
+      Estimated CO₂e (kg) = app power estimate (W) × screen time (hours) ÷ 1,000 × app emission factor (kg CO₂e/kWh).<br>
+      This is an estimate based on the app profiles in Eco-Tracker; it is not a direct measurement of device or data-center electricity.
+    </aside>
+  </main>
+  <footer class="footer">Eco-Tracker · Monthly screen-time carbon estimate</footer>
+</body>
+</html>

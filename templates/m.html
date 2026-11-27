@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eco-Tracker Calculator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+body{
+  font-family:Inter,sans-serif;
+  background:#f6f8f6;
+  margin:0;
+}
+
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  background:white;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:800;
+  color:#22c55e;
+}
+
+.nav-buttons button{
+  margin-left:10px;
+  padding:10px 18px;
+  background:#22c55e;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.header{
+  background:#ecfdf3;
+  padding:40px 20px;
+  text-align:center;
+}
+
+.container{
+  max-width:1100px;
+  margin:40px auto;
+}
+
+.hero{
+  background:white;
+  border-radius:22px;
+  padding:40px;
+  border:1px solid #e2e8e2;
+  text-align:center;
+}
+
+.hero .value{
+  font-size:56px;
+  font-weight:800;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-top:40px;
+}
+
+.card{
+  background:white;
+  padding:28px;
+  border-radius:18px;
+  border:1px solid #e2e8e2;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:12px;
+  border-bottom:1px solid #e5e7eb;
+}
+
+th{
+  background:#eafff1;
+}
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='app-theme.css') }}">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo">🌱 EcoTracker</div>
+
+  <div class="nav-buttons">
+    <a href="/m" class="active"><button>Home</button></a>
+    <a href="/history"><button>History</button></a>
+    <a href="/analytics"><button>Analytics</button></a>
+    <a href="{{ url_for('monthly_report') }}"><button>Monthly report</button></a>
+    <a href="/prediction"><button>Prediction</button></a>
+    {% if user_name %}<span style="margin-left:12px">Hi, {{ user_name }}</span>
+    <form method="post" action="{{ url_for('logout') }}" style="display:inline"><button type="submit">Sign out</button></form>{% endif %}
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Eco-Tracker Calculator</h1>
+  <p>Smart digital carbon footprint monitoring</p>
+  {% if tracker_enabled and tracking_running %}
+    <p>Desktop tracking is active while Eco-Tracker is open.</p>
+  {% elif tracker_enabled %}
+    <p>Desktop tracking is paused. <a href="{{ url_for('dashboard') }}">Refresh</a> after resuming it.</p>
+  {% else %}
+    <p>Desktop tracking is unavailable on this setup. Try the <a href="{{ url_for('calculator') }}">manual calculator</a>.</p>
+  {% endif %}
+</div>
+
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+  <h2>TOTAL CARBON EMISSION (TODAY)</h2>
+  <p style="color:gray;">Calculated from screen time captured on this device today. Sample data is excluded.</p>
+
+  <div class="gauge" style="width:300px;margin:20px auto;">
+  <svg viewBox="0 0 200 110">
+    <path d="M20 100 A80 80 0 0 1 180 100"
+      stroke="#e5e7eb" stroke-width="18" fill="none"/>
+    
+    <path
+      d="M20 100 A80 80 0 0 1 180 100"
+      stroke="#22c55e" stroke-width="18"
+      stroke-linecap="round"
+      stroke-dasharray="251"
+      stroke-dashoffset="{{ 251 - (total_co2/8.5)*251 if total_co2 < 8.5 else 0 }}"
+      fill="none"/>
+  </svg>
+</div>
+
+<div class="value">
+  {{ total_co2 }} <span style="font-size:18px">kg CO₂</span>
+</div>
+
+<p style="color:gray;">
+  Sustainable limit ≈ 8.5 kg CO₂
+</p>
+
+  <p>Based on energy consumption model</p>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+
+<!-- APP USAGE -->
+<div class="card">
+  <h3>📱 App Usage</h3>
+
+  {% if data %}
+  <table>
+    <tr>
+      <th>Application</th>
+      <th>Usage (minutes)</th>
+    </tr>
+    {% for app, min in data %}
+    <tr>
+      <td>{{ app }}</td>
+      <td>{{ min }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p>No app usage has been recorded today yet. Keep Eco-Tracker open to collect desktop usage, or try the manual calculator.</p>
+    <a href="{{ url_for('calculator') }}">Open manual calculator</a>
+  {% endif %}
+</div>
+
+<!-- FORMULA -->
+<div class="card">
+  <h3> Carbon Calculation Formula</h3>
+
+  <p><b>Energy (kWh) = Power × Time / 1000</b></p>
+  <p><b>CO₂ = Energy × Emission Factor</b></p>
+
+ 
+</div>
+
+</div>
+
+<div class="card" style="margin-top:30px;">
+  <h3> Detailed Carbon Calculation</h3>
+
+  <table>
+    <tr>
+      <th>App</th>
+      <th>Time (hrs)</th>
+      <th>Power (W)</th>
+      <th>Energy (kWh)</th>
+      <th>CO₂ (kg)</th>
+    </tr>
+
+    {% for item in details %}
+    <tr>
+      <td>{{ item.app }}</td>
+      <td>{{ item.hours|round(2) }}</td>
+      <td>{{ item.power }}</td>
+      <td>{{ item.energy|round(3) }}</td>
+      <td>{{ item.co2|round(3) }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+</div>
+
+
+
+</body>
+</html>

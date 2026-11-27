@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Prediction | EcoTracker</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Inter,sans-serif;
+margin:0;
+background:#f6f8f6;
+}
+
+/* NAVBAR */
+.navbar{
+display:flex;
+justify-content:space-between;
+padding:15px 40px;
+background:white;
+border-bottom:1px solid #eee;
+}
+
+.logo{
+font-size:22px;
+font-weight:800;
+color:#22c55e;
+}
+
+.nav a{
+text-decoration:none;
+margin-left:10px;
+}
+
+.nav button{
+padding:8px 16px;
+background:#22c55e;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* HEADER */
+.header{
+text-align:center;
+padding:30px;
+background:#ecfdf3;
+}
+
+.header h1{
+margin:0;
+font-size:36px;
+color:#22c55e;
+}
+
+/* CONTAINER */
+.container{
+max-width:1100px;
+margin:auto;
+padding:30px;
+}
+
+/* CARDS */
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-bottom:30px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:16px;
+text-align:center;
+border:1px solid #e5e7eb;
+}
+
+.card h3{
+margin:0;
+color:#6b7280;
+}
+
+.value{
+font-size:28px;
+font-weight:800;
+margin-top:10px;
+}
+
+/* CHART */
+.chartBox{
+background:white;
+padding:25px;
+border-radius:16px;
+border:1px solid #e5e7eb;
+}
+
+/* INFO */
+.info{
+margin-top:25px;
+background:white;
+padding:20px;
+border-radius:16px;
+border:1px solid #e5e7eb;
+line-height:1.6;
+}
+
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='app-theme.css') }}">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+<div class="logo">🌱 EcoTracker</div>
+<div class="nav">
+<a href="/"><button>Home</button></a>
+<a href="/history"><button>History</button></a>
+<a href="/analytics"><button>Analytics</button></a>
+<a href="{{ url_for('monthly_report') }}"><button>Monthly report</button></a>
+<a href="/prediction" class="active"><button>Prediction</button></a>
+</div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+<h1>🔮 AI Prediction Dashboard</h1>
+<p>Smart estimation using Machine Learning</p>
+</div>
+
+{% include "sample_notice.html" %}
+
+<div class="container">
+
+<!-- CARDS -->
+<div class="cards">
+
+<div class="card">
+<h3>Tomorrow Screen Time</h3>
+<div class="value">{{ predicted_minutes }} min</div>
+</div>
+
+<div class="card">
+<h3>Predicted Carbon</h3>
+<div class="value">{{ predicted_co2 }} kg</div>
+</div>
+
+<div class="card">
+<h3>Forecast method</h3>
+<div class="value">{{ top_app_prediction }}</div>
+</div>
+
+<div class="card">
+<h3>This Month vs. {{ monthly_limit_kg }} kg Limit</h3>
+<div class="value" style="color:{{ '#b42318' if over_monthly_limit else '#16834a' }}">{{ monthly_co2_kg }} kg</div>
+<p>{{ 'Unsafe: monthly limit exceeded' if over_monthly_limit else 'Within the monthly limit' }}</p>
+</div>
+
+</div>
+
+<div class="info" style="margin-bottom:20px;">
+<b>{{ 'App screen time to reduce' if over_monthly_limit else 'Largest app source to reduce' }}</b><br><br>
+{% if reduction_plan %}
+  {% if over_monthly_limit %}
+    To get below {{ monthly_limit_kg }} kg this month, reduce:
+  {% else %}
+    Your month is within the limit. Reducing the largest contributor will lower it further:
+  {% endif %}
+  <ul>
+  {% for item in reduction_plan %}
+    <li><b>{{ item.app }}</b>: about {{ item.hours_to_reduce|round(1) }} hours this month ({{ item.hours_per_day|round(1) }} hours/day), saving roughly {{ item.kg_saved|round(2) }} kg CO₂e.</li>
+  {% endfor %}
+  </ul>
+{% else %}
+  No app usage is available yet to make a reduction recommendation.
+{% endif %}
+<a href="{{ url_for('monthly_report') }}">Open the monthly report</a>
+</div>
+
+<div class="info" style="margin-bottom:20px;">
+<b>Forecasted app usage tomorrow</b>
+{% if app_forecast %}
+<ul>
+  {% for item in app_forecast %}
+  <li>{{ item.app }}: {{ item.minutes }} min, about {{ item.co2_kg|round(3) }} kg CO₂e</li>
+  {% endfor %}
+</ul>
+{% else %}<p>No app-level forecast is available yet.</p>{% endif %}
+</div>
+
+<!-- GRAPH -->
+<div class="chartBox">
+<canvas id="predictionChart"></canvas>
+</div>
+
+<!-- INFO -->
+<div class="info">
+<b>How Prediction Works:</b><br><br>
+
+• Model: Linear Regression<br>
+• Data Used: Last 14 calendar days of app screen time<br>
+• Learns: usage trend over time<br><br>
+
+
+<b>Meaning:</b><br>
+System predicts your tomorrow usage based on past behavior pattern.
+</div>
+
+</div>
+
+<script>
+
+const days = {{ days|tojson }};
+const actual = {{ actual|tojson }};
+const predicted = {{ predicted|tojson }};
+
+new Chart(document.getElementById("predictionChart"),{
+type:"line",
+data:{
+labels:days,
+datasets:[
+{
+label:"Actual Usage",
+data:actual,
+borderWidth:2
+},
+{
+label:"Predicted Trend",
+data:predicted,
+borderDash:[5,5],
+borderWidth:2
+}
+]
+}
+});
+
+</script>
+
+</body>
+</html>

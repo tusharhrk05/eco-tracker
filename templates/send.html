@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Message Sent | Eco-Tracker</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='send.css') }}">
+</head>
+
+<body>
+
+<!-- Blurred Background Mock -->
+<div class="background-mock">
+  <div class="mock-container">
+    <div class="mock-header"></div>
+    <div class="mock-grid">
+      <div></div>
+      <div></div>
+    </div>
+    <div class="mock-line"></div>
+    <div class="mock-line short"></div>
+    <div class="mock-line shorter"></div>
+    <div class="mock-button"></div>
+  </div>
+</div>
+
+<!-- Overlay -->
+<div class="overlay">
+
+  <!-- Modal -->
+  <div class="modal">
+
+    <!-- Decorative Icons -->
+    <span class="icon top-left material-symbols-outlined">eco</span>
+    <span class="icon bottom-right material-symbols-outlined">eco</span>
+
+    <!-- Close -->
+    <button class="close-btn">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+
+    <!-- Content -->
+    <div class="content">
+
+      <div class="success-badge">
+        <span class="material-symbols-outlined">check</span>
+      </div>
+
+      <h2>Message Saved Successfully!</h2>
+
+      <p>
+        Thank you for reaching out to Eco-Tracker. Your message has been saved
+        in this local project database.
+      </p>
+
+      <a href="/" class="action-btn">
+        Return to Homepage
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

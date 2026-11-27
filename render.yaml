@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: eco-tracker
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: "python seed_sample_data.py && gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --access-logfile -"
+    healthCheckPath: /
+    envVars:
+      - key: ECO_TRACKER_DB
+        value: /tmp/eco-tracker.db
+      - key: ECO_TRACKER_SECRET_KEY
+        generateValue: true

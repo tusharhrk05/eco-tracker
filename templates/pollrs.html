@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sustainability Poll Results</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pollrs.css') }}">
+</head>
+<body>
+
+<!-- FULL SCREEN BACKGROUND IMAGE -->
+<div class="bg-image"></div>
+
+<div class="layout fade-in">
+
+  <h1>🌍 Community Poll Results</h1>
+  <p class="subtitle">
+    See what the Eco-Tracker community finds most challenging
+  </p>
+
+  <div class="chart-card glass slide-up">
+
+    <div class="row">
+      <span>📹 Video Calls</span>
+      <div class="bar">
+        <div data-key="Video Calls"></div>
+      </div>
+      <span data-percent="Video Calls">0%</span>
+    </div>
+
+    <div class="row">
+      <span>☁️ Cloud Storage</span>
+      <div class="bar">
+        <div data-key="Cloud Storage"></div>
+      </div>
+      <span data-percent="Cloud Storage">0%</span>
+    </div>
+
+    <div class="row">
+      <span>🎬 Streaming</span>
+      <div class="bar">
+        <div data-key="Streaming"></div>
+      </div>
+      <span data-percent="Streaming">0%</span>
+    </div>
+
+    <div class="row">
+      <span>💬 Social Media</span>
+      <div class="bar">
+        <div data-key="Social Media"></div>
+      </div>
+      <span data-percent="Social Media">0%</span>
+    </div>
+
+  </div>
+
+  <p class="footer-note">
+    Every vote contributes to a greener digital future 🌱
+  </p>
+
+</div>
+
+<script src="{{ url_for('static', filename='pollrs.js') }}"></script>
+</body>
+</html>

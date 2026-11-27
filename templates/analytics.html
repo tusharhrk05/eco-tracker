@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Eco Tracker Analytics</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Inter,sans-serif;
+margin:0;
+background:#f6f8f6;
+}
+
+.header{
+background:#ecfdf3;
+padding:35px;
+text-align:center;
+}
+
+.header h1{
+margin:0;
+font-size:38px;
+color:#22c55e;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:30px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+margin-bottom:30px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:16px;
+border:1px solid #e5e7eb;
+text-align:center;
+}
+
+.card h3{
+margin:0;
+font-size:14px;
+color:#6b7280;
+}
+
+.card .value{
+font-size:28px;
+font-weight:800;
+margin-top:6px;
+}
+
+.category-panel{
+background:white;
+padding:24px;
+margin:0 0 30px;
+border:1px solid #e5e7eb;
+border-radius:16px;
+}
+
+.category-panel h2{margin:0 0 6px;font-size:20px;color:#1f3d2c;}
+.category-intro{margin:0 0 20px;color:#6b7280;font-size:14px;}
+.category-row{display:grid;grid-template-columns:150px minmax(90px,1fr) 110px;align-items:center;gap:16px;margin:14px 0;}
+.category-name{font-weight:700;color:#243b2d;}
+.category-name small{display:block;margin-top:3px;color:#7a847d;font-size:11px;font-weight:400;}
+.category-track{height:12px;overflow:hidden;border-radius:999px;background:#edf2ee;}
+.category-fill{height:100%;min-width:0;border-radius:inherit;background:linear-gradient(90deg,#22c55e,#12834a);}
+.category-row:nth-of-type(2) .category-fill{background:linear-gradient(90deg,#60a5fa,#2563eb);}
+.category-row:nth-of-type(3) .category-fill{background:linear-gradient(90deg,#c084fc,#9333ea);}
+.category-row:nth-of-type(4) .category-fill{background:linear-gradient(90deg,#fb923c,#ea580c);}
+.category-value{text-align:right;font-weight:800;color:#243b2d;}
+.category-value small{font-size:12px;color:#6b7280;font-weight:600;}
+.category-empty{padding:16px;border-radius:10px;background:#f7faf7;color:#6b7280;}
+
+.tabs{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.tab{
+padding:10px 18px;
+background:white;
+border:1px solid #ddd;
+border-radius:8px;
+cursor:pointer;
+}
+
+.tab.active{
+background:#22c55e;
+color:white;
+}
+
+.chartBox{
+background:white;
+padding:30px;
+border-radius:16px;
+border:1px solid #e5e7eb;
+}
+
+.footer{
+text-align:center;
+padding:25px;
+font-size:13px;
+color:#6b7280;
+}
+.navbar{
+display:flex;
+justify-content:space-between;
+padding:15px 40px;
+background:white;
+border-bottom:1px solid #eee;
+}
+
+.logo{
+font-size:22px;
+font-weight:800;
+color:#22c55e;
+}
+
+.nav a{
+text-decoration:none;
+margin-left:10px;
+}
+
+.nav button{
+padding:8px 16px;
+background:#22c55e;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+@media(max-width:640px){
+.container{padding:18px;}
+.cards{grid-template-columns:repeat(2,minmax(0,1fr));}
+.category-row{grid-template-columns:1fr auto;gap:8px;}
+.category-track{grid-column:1/-1;grid-row:2;}
+.category-value{grid-column:2;grid-row:1;}
+}
+
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='app-theme.css') }}">
+</head>
+
+<body>
+<div class="navbar">
+<div class="logo">🌱 EcoTracker</div>
+<div class="nav">
+<a href="/m"><button>Home</button></a>
+<a href="/history"><button>History</button></a>
+<a href="/analytics" class="active"><button>Analytics</button></a>
+<a href="{{ url_for('monthly_report') }}"><button>Monthly report</button></a>
+<a href="/prediction"><button>Prediction</button></a>
+</div>
+</div>
+<div style="text-align:center;margin-bottom:25px;">
+
+<label style="font-weight:600;margin-right:10px;">
+Select Date:
+</label>
+
+<input 
+type="date"
+id="datePicker"
+value="{{selected_date}}"
+onchange="changeDate()"
+style="padding:8px;border-radius:6px;border:1px solid #ccc;"
+>
+
+</div>
+<div class="header">
+<h1>Analytics Dashboard</h1>
+<p>Insights of your digital carbon footprint</p>
+</div>
+
+{% include "sample_notice.html" %}
+
+<div class="container">
+
+<!-- SUMMARY CARDS -->
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Screen Time</h3>
+<div class="value">{{ total_minutes }} min</div>
+</div>
+
+<div class="card">
+<h3>Total Carbon</h3>
+<div class="value">{{ total_co2 }} kg</div>
+</div>
+
+<div class="card">
+<h3>Most Used App</h3>
+<div class="value">{{ top_app }}</div>
+</div>
+
+<div class="card">
+<h3>Apps Used</h3>
+<div class="value">{{ app_count }}</div>
+</div>
+
+</div>
+
+<section class="category-panel" aria-labelledby="categoryHeading">
+  <h2 id="categoryHeading">Emissions by app type</h2>
+  <p class="category-intro">Each category’s share of the {{ total_co2 }} kg CO₂e estimate for {{ selected_date }}.</p>
+  {% if category_totals %}
+    {% for item in category_totals %}
+    <div class="category-row">
+      <div class="category-name">{{ item.category }}<small>{{ item.app_count }} app{{ '' if item.app_count == 1 else 's' }}</small></div>
+      <div class="category-track" role="img" aria-label="{{ item.category }}: {{ item.share_pct|round(1) }} percent of emissions">
+        <div class="category-fill" style="width:{{ item.share_pct|round(1) }}%"></div>
+      </div>
+      <div class="category-value">{{ item.co2_kg }} kg<br><small>{{ item.share_pct|round(1) }}%</small></div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="category-empty">No emissions are recorded for this date yet.</div>
+  {% endif %}
+</section>
+
+<!-- TABS -->
+
+<div class="tabs">
+
+<div class="tab active" onclick="loadChart('apps',this)">
+App Usage
+</div>
+
+<div class="tab" onclick="loadChart('carbon',this)">
+Carbon Trend
+</div>
+
+<div class="tab" onclick="loadChart('top',this)">
+Top Apps
+</div>
+
+<div class="tab" onclick="loadChart('weekly',this)">
+Weekly Usage
+</div>
+
+</div>
+
+<div class="chartBox">
+<canvas id="chart"></canvas>
+</div>
+
+</div>
+
+<div class="footer">
+Eco Tracker Smart Analytics
+</div>
+
+<script>
+
+const appLabels = {{ app_labels|tojson|safe }}
+const appData = {{ app_data|tojson|safe }}
+
+const carbonDays = {{ carbon_days|tojson|safe }}
+const carbonValues = {{ carbon_values|tojson|safe }}
+
+const topApps = {{ top_apps|tojson|safe }}
+const topMinutes = {{ top_minutes|tojson|safe }}
+
+const weekDays = {{ week_days|tojson|safe }}
+const weekMinutes = {{ week_minutes|tojson|safe }}
+
+const chartCanvas = document.getElementById("chart")
+
+let chart = null
+
+function loadChart(type, el){
+
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"))
+el.classList.add("active")
+
+if(chart){
+chart.destroy()
+}
+
+if(type=="apps"){
+
+chart=new Chart(chartCanvas,{
+type:"pie",
+data:{
+labels:appLabels,
+datasets:[{
+label:"Minutes",
+data:appData
+}]
+}
+})
+
+}
+
+else if(type=="carbon"){
+
+chart=new Chart(chartCanvas,{
+type:"line",
+data:{
+labels:carbonDays,
+datasets:[{
+label:"CO₂ kg",
+data:carbonValues,
+tension:0.3
+}]
+}
+})
+
+}
+
+else if(type=="top"){
+
+chart=new Chart(chartCanvas,{
+type:"bar",
+data:{
+labels:topApps,
+datasets:[{
+label:"Minutes",
+data:topMinutes
+}]
+}
+})
+
+}
+
+else if(type=="weekly"){
+
+chart=new Chart(chartCanvas,{
+type:"bar",
+data:{
+labels:weekDays,
+datasets:[{
+label:"Minutes",
+data:weekMinutes
+}]
+}
+})
+
+}
+
+}
+
+function changeDate(){
+
+let date=document.getElementById("datePicker").value
+window.location="/analytics?date="+date
+
+}
+
+window.onload=function(){
+loadChart("apps",document.querySelector(".tab"))
+}
+
+</script>
+
+</body>
+</html>

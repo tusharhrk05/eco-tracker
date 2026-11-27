@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Tracker</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="page hero-bg">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-area">
+            <!-- PNG LOGO IMAGE -->
+            <img src="{{ url_for('static', filename='Logo.png') }}" alt="Eco-Tracker Logo" class="logo-img">
+
+        </div>
+
+        <nav class="nav">
+            <a href="/contact">Contact</a>
+            <a href="/work">How It Works</a>
+            <a href="/m">Calculation</a>
+           <a href="/log" class="signin-btn">Sign In</a>
+        </nav>
+    </header>
+
+    <!-- Main Section -->
+    <main class="main">
+        <h1 class="title">
+            Eco-Tracker :<br>
+            <span>Track. Understand. Reduce.</span>
+        </h1>
+
+        <div class="cards">
+
+            <div class="card">
+                <span class="material-symbols-outlined icon">video_camera_back</span>
+                <h3>Streaming Impact</h3>
+                <p>Streaming 1 hour of video can emit up to 55g of CO₂.</p>
+            </div>
+
+            <div class="card">
+                <span class="material-symbols-outlined icon">public</span>
+                <h3>Global Impact</h3>
+                <p>The internet produces nearly 4% of global emissions.</p>
+            </div>
+
+        </div>
+
+        <a href="/sign" class="cta-btn">
+            Start Your Journey
+            <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+
+        <p class="join-text">Join 10k+ eco-warriors tracking their footprint</p>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        © 2026 Eco-Tracker Project • For a Greener Digital World
+    </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+Flask>=3.1,<4
+psutil>=7.1,<8
+pywin32>=311; platform_system == "Windows"
+gunicorn>=23,<24; platform_system != "Windows"

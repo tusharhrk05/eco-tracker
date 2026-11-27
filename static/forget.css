@@ -1,0 +1,229 @@
+/* ===== BASE ===== */
+body {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* ===== BACKGROUND ===== */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  background: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBxVMhpBxkdd9TNUcwPyHGToOl048cfpaO-7-3atRJ_HxQ6XFEMmuKTZZYVr9YvCNKQaTC7AsnUOXkfbRW4-LmXp9JlXOkvyKYObM0JgE9p_2IuGNRPtxHIyh3F3IeBNQ2174zlX9aM3G3W3Tt7KJlqvcFJAoxZLz9LfKracpZd8zY5j7ylyTsfkJsMhFnJ9b-oLUsBUj6I9Up9TN05J7yMlOzO2YoJ15d3sp2Mk5WFdRBb4cP5dW7lP_t0CT7I4LAl0sZSxPRmdMg")
+    no-repeat center/cover;
+  filter: brightness(0.55);
+  z-index: -2;
+}
+
+.bg-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), transparent 50%),
+              radial-gradient(circle at 70% 70%, rgba(19,236,91,0.08), transparent 50%);
+}
+
+/* ===== PAGE ===== */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 80px;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.nav {
+  display: flex;
+  gap: 35px;
+}
+
+.nav a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.nav a:hover {
+  color: rgb(25, 225, 6);
+}
+
+/* ===== MAIN ===== */
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  padding: 70px 100px;
+  align-items: center;
+}
+
+/* ===== HERO ===== */
+.hero h1 {
+  font-size: 65px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.green {
+  color: #13ec5b;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  font-size: 11px;
+  margin-bottom: 25px;
+}
+
+.hero p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.65);
+  max-width: 450px;
+}
+
+.avatars {
+  display: flex;
+  margin-top: 25px;
+}
+
+.avatars img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  margin-left: -12px;
+}
+
+.join-text {
+  margin-top: 15px;
+  font-size: 14px;
+  color: rgba(19,236,91,0.8);
+}
+
+/* ===== FORM CARD ===== */
+.form-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(25px);
+  padding: 50px;
+  border-radius: 35px;
+}
+
+.form-card h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 42px;
+}
+
+.subtitle {
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 30px;
+}
+
+/* INPUT */
+label {
+  font-size: 13px;
+  font-weight: bold;
+  color: rgba(255,255,255,0.6);
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin-top: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: white;
+}
+
+input:focus {
+  outline: none;
+  border-color: #13ec5b;
+}
+
+/* LIVE LINK */
+.live-link {
+  margin-top: 18px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+}
+
+.live-link span {
+  color: #13ec5b;
+  font-weight: bold;
+}
+
+/* BUTTON */
+.reset-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-weight: bold;
+  background: #0d5c2c;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.reset-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(19,236,91,0.5);
+}
+
+/* BACK LOGIN */
+.back-login {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.back-login a {
+  text-decoration: none;
+  color: rgba(19,236,91,0.8);
+  font-weight: bold;
+}
+
+.back-login a:hover {
+  text-decoration: underline;
+}
+
+/* FOOTER */
+.footer {
+  padding: 20px 80px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+}
+
+.footer a {
+  color: rgba(255,255,255,0.35);
+  margin-left: 20px;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #13ec5b;
+}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco-Tracker | Premium Login</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='log.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
+</head>
+
+<body>
+
+<!-- Background -->
+<div class="bg-layer"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <!-- Logo JPG Option -->
+    <div class="logo-wrap">
+      <img src="{{ url_for('static', filename='Logo.png') }}" class="logo-img"
+           alt="Eco-Tracker Logo"
+           onerror="this.style.display='none'">
+     
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/work">How it Works</a>
+    </nav>
+
+  </header>
+
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- LEFT HERO -->
+    <section class="hero">
+
+      <span class="badge">THE FUTURE IS ORGANIC</span>
+
+      <h1>
+        Your Digital <br>
+        <span class="green">Green</span> <br>
+        Journey Starts Here.
+      </h1>
+
+      <p>
+        Harness the power of high-end ecological data to navigate your path
+        toward a carbon-neutral lifestyle.
+      </p>
+
+      <div class="avatars">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1K6NWjqxSInCvFVAIQh7CHhjV9y_FkXl4XYhtayPTt8IWa7dEFndN6sEyWZSKQUd3jYhIA74xwDB8hbaj3-DhdXO8z2PbjRViwdGbBYZjwUBsYZ2-4EN1IY-A3m6q3dBFCg8cBYmiKXcmq-0HOCdLsZDf9UI8ZGtdwB-PNaHLQfYx1vMiUX8UxwfEaVpId6CVvpSdrt0DDjpCE3rckEZw7R5AP-O-Dn8r4KD56kwzUvOaCy7zW6UgU_IJut5vFWu23fT8kWX5MVs" alt="user">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhr4bC9L1DLwDfUEI71SpZtR5Hdr8ew45mvE9Pa1N94IhjGALGrB14YRTdFtjeH0JSay_hRhqFiiV7SUfHbGnG5r7WcVa--SUm8zE1ZiKNZlDuhSm6RciGWZqaNzbvq2GgOas8TQXWkCIXt6QwJp4hJgdnd2wlgzQfqscddo4LVSAXY4Py3Gi3zMX7CUQyPK8aHuRI0_2oOcfnpha5Gw3DOrhrUw8dyD8zxj-7-NvOrMgaPiIkDh-OQuSq_dv2xhktEczQ5N_XaFc" alt="user">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiIEPx0FSXNRywqL64fQujVG56h8Pbnt0MjC-rF5ufQhNvNPr9isbFzGsIGbg7CVEpNxs8w9PI9hzeGcPC4ftrnmdxvpC16BgvQmIj2DbRAHeZrJwSiv-vgmvzQ_CJTonylZ_CTtpjDcjxAC31GVV2o5W-C6VpAi2Uw4q0_tl1Y_Pp7eylfj8Qz9k3hQ4lzmICpupeIwwL64uuYYdI6um2jmm4cEby-1WoDdf6t1J38Hf5TFym7q8-zxU2dBOgf1a0oMK2Fn_yD7M" alt="user">
+      </div>
+
+      <p class="join-text">
+        Join +10,000 Eco-warriors worldwide 🌍
+      </p>
+
+    </section>
+
+
+    <!-- LOGIN FORM -->
+    <section class="form-card">
+
+      <h2>Welcome Back</h2>
+      <p class="subtitle">Enter your credentials to access your dashboard.</p>
+
+      {% for category, message in get_flashed_messages(with_categories=true) %}
+        <p role="alert" class="form-message {{ category }}">{{ message }}</p>
+      {% endfor %}
+      <form method="post" action="{{ url_for('login') }}">
+
+        <label>Email Address</label>
+        <input name="email" type="email" placeholder="eco-warrior@premium.earth" autocomplete="email" required>
+
+        <label>Password</label>
+        <input name="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+
+        <a href="/forget" class="forgot">Forgot Password?</a>
+
+        <button type="submit" class="login-btn">
+          Secure Login
+        </button>
+
+      </form>
+
+      <p class="signup-text">
+        Not a member?
+        <a href="/sign">Create Account</a>
+      </p>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2024 Eco-Tracker Luxury Systems</p>
+
+    <div>
+      <a href="/contact">Contact</a>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

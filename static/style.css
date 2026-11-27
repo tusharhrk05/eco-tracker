@@ -1,0 +1,158 @@
+/* ========== BASE RESET ========== */
+body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background-color: #000;
+}
+
+.page {
+    min-height: 100vh;
+    color: #ffffff;
+}
+
+/* ========== HERO BACKGROUND ========== */
+.hero-bg {
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url("background.avif"); /* replace with your own image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* ========== HEADER ========== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+/* ========== NAVIGATION ========== */
+.nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 24px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.nav a:hover {
+    color: #13ec5b;
+}
+
+.signin-btn {
+    background: transparent;
+    border: 5px solid rgba(255,255,255,0.6);
+    color: rgb(255, 255, 255);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.signin-btn:hover {
+    color: #13ec5b;
+    background: rgba(255,255,255,0.15);
+}
+
+/* ========== MAIN CONTENT ========== */
+.main {
+    text-align: center;
+    padding: 10px 20px 80px;
+}
+
+/* Title */
+.title {
+    font-family: "Playfair Display", serif;
+    color: #3bef05;
+    font-size: 60px;
+    line-height: 1.1;
+    margin-bottom: 70px;
+}
+
+.title span {
+    font-style: italic;
+    color: #ffffff;
+}
+
+/* ========== CARDS SECTION ========== */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto 60px auto;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: left;
+}
+
+.card h3 {
+    margin: 12px 0 8px;
+    font-size: 30px;
+}
+
+.card p {
+    font-size: 20px;
+    opacity: 0.9;
+}
+
+.icon {
+    font-size: 45px;
+    color: #13ec5b;
+}
+
+/* ========== CTA BUTTON ========== */
+.cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #13ec5b;
+    color: #102216;
+    font-size: 20px;
+    font-weight: 800;
+    padding: 16px 36px;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+}
+
+.cta-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Text below CTA */
+.join-text {
+    margin-top: 12px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* ========== FOOTER ========== */
+.footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    opacity: 0.6;
+}

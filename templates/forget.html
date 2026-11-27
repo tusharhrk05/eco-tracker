@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco-Tracker | Password Recovery</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='forget.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
+</head>
+
+<body>
+
+<!-- Background -->
+<div class="bg-layer"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <!-- JPG LOGO OPTION -->
+    <div class="logo-wrap">
+      <img src="{{ url_for('static', filename='Logo.png') }}" alt="Eco-Tracker Logo"
+           class="logo-img"
+           onerror="this.style.display='none'">
+
+    
+    </div>
+
+    <!-- NAV -->
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/work">How it Works</a>
+    </nav>
+
+  </header>
+
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- LEFT HERO -->
+    <section class="hero">
+
+      <span class="badge">THE FUTURE IS ORGANIC</span>
+
+      <h1>
+        Your Digital <br>
+        <span class="green">Green</span> <br>
+        Journey Starts Here.
+      </h1>
+
+      <p>
+        Reset your password securely and continue tracking your carbon footprint.
+      </p>
+
+      <div class="avatars">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1K6NWjqxSInCvFVAIQh7CHhjV9y_FkXl4XYhtayPTt8IWa7dEFndN6sEyWZSKQUd3jYhIA74xwDB8hbaj3-DhdXO8z2PbjRViwdGbBYZjwUBsYZ2-4EN1IY-A3m6q3dBFCg8cBYmiKXcmq-0HOCdLsZDf9UI8ZGtdwB-PNaHLQfYx1vMiUX8UxwfEaVpId6CVvpSdrt0DDjpCE3rckEZw7R5AP-O-Dn8r4KD56kwzUvOaCy7zW6UgU_IJut5vFWu23fT8kWX5MVs">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhr4bC9L1DLwDfUEI71SpZtR5Hdr8ew45mvE9Pa1N94IhjGALGrB14YRTdFtjeH0JSay_hRhqFiiV7SUfHbGnG5r7WcVa--SUm8zE1ZiKNZlDuhSm6RciGWZqaNzbvq2GgOas8TQXWkCIXt6QwJp4hJgdnd2wlgzQfqscddo4LVSAXY4Py3Gi3zMX7CUQyPK8aHuRI0_2oOcfnpha5Gw3DOrhrUw8dyD8zxj-7-NvOrMgaPiIkDh-OQuSq_dv2xhktEczQ5N_XaFc">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiIEPx0FSXNRywqL64fQujVG56h8Pbnt0MjC-rF5ufQhNvNPr9isbFzGsIGbg7CVEpNxs8w9PI9hzeGcPC4ftrnmdxvpC16BgvQmIj2DbRAHeZrJwSiv-vgmvzQ_CJTonylZ_CTtpjDcjxAC31GVV2o5W-C6VpAi2Uw4q0_tl1Y_Pp7eylfj8Qz9k3hQ4lzmICpupeIwwL64uuYYdI6um2jmm4cEby-1WoDdf6t1J38Hf5TFym7q8-zxU2dBOgf1a0oMK2Fn_yD7M">
+      </div>
+
+      <p class="join-text">Trusted by +10,000 Eco-Warriors 🌍</p>
+
+    </section>
+
+
+    <!-- RECOVERY FORM -->
+    <section class="form-card">
+
+      <h2>Reset Password</h2>
+      <p class="subtitle">
+        Enter the email used for your account. A local reset link will be shown here.
+      </p>
+
+      {% for category, message in get_flashed_messages(with_categories=true) %}
+        <p role="alert" class="form-message {{ category }}">{{ message }}</p>
+      {% endfor %}
+      <form id="recoveryForm" method="post" action="{{ url_for('forget') }}">
+
+        <label>Email Address</label>
+        <input id="emailInput" name="email" type="email" autocomplete="email"
+               placeholder="eco-warrior@premium.earth"
+               required>
+
+        {% if submitted %}
+          <p class="live-link" role="status">
+            {% if reset_url %}
+              Local reset link: <a href="{{ reset_url }}">Reset your password</a> (expires in 30 minutes).
+            {% else %}
+              If an account uses that email, a reset link is ready. Check the email and try signing in.
+            {% endif %}
+          </p>
+        {% endif %}
+
+        <button type="submit" class="reset-btn">
+          Send Reset Link
+        </button>
+
+      </form>
+
+      <div class="back-login">
+        <a href="/log">
+          ← Return to Login
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2024 Eco-Tracker Luxury Systems</p>
+
+    <div>
+      <a href="/contact">Contact</a>
+    </div>
+  </footer>
+
+</div>
+
+<!-- JS -->
+</body>
+</html>

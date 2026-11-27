@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eco-Tracker | Contact Us</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}" />
+</head>
+
+<body>
+<div class="layout">
+
+<header class="header">
+  <div class="logo-area">
+    <img src="{{ url_for('static', filename='Logo.png') }}" class="logo-img" alt="Eco-Tracker Logo"
+         onerror="this.style.display='none'">
+  </div>
+
+  <nav class="nav">
+    <a href="/">Home</a>
+    <a href="/contact" class="active">Contact</a>
+  </nav>
+</header>
+
+<main class="container">
+
+  <section class="intro fade-in">
+    <h1>Get in Touch</h1>
+    <p>Have questions about your digital footprint or feedback for our team? We’d love to hear from you.</p>
+  </section>
+
+  <section class="content">
+
+    <!-- LEFT COLUMN -->
+    <div class="info slide-up">
+
+      <div class="info-box glass">
+        <span class="material-symbols-outlined">mail</span>
+        <div>
+          <small>Email Us</small>
+          <p>contact@ecotracker.com</p>
+        </div>
+      </div>
+
+      <div class="info-box glass">
+        <span class="material-symbols-outlined">location_on</span>
+        <div>
+          <small>Visit Us</small>
+          <p>Green Tech Hub, Digital City</p>
+        </div>
+      </div>
+
+      <!-- 🌱 SUSTAINABILITY POLL -->
+      <div class="poll-container glass">
+        <p class="poll-title">
+          Sustainability Poll
+          <span>What’s your biggest digital carbon challenge?</span>
+        </p>
+
+        <div class="poll-options">
+          <button class="poll-btn" data-value="Video Calls">📹 Video calls & meetings</button>
+          <button class="poll-btn" data-value="Cloud Storage">☁️ Cloud storage & backups</button>
+          <button class="poll-btn" data-value="Streaming">🎬 Video streaming</button>
+          <button class="poll-btn" data-value="Social Media">💬 Social media usage</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FORM -->
+    <div class="form-card slide-up delay">
+      {% for category, message in get_flashed_messages(with_categories=true) %}
+        <p role="alert" class="form-message {{ category }}">{{ message }}</p>
+      {% endfor %}
+      <form id="contactForm" method="post" action="{{ url_for('contact') }}">
+        <label>Full Name</label>
+        <input name="name" type="text" autocomplete="name" required>
+
+        <label>Email Address</label>
+        <input name="email" type="email" autocomplete="email" required>
+
+        <label>Subject</label>
+        <select name="subject" required>
+          <option>General Inquiry</option>
+          <option>Technical Support</option>
+          <option>Partnership</option>
+          <option>Feedback</option>
+        </select>
+
+        <label>Message</label>
+        <textarea name="message" rows="5" required></textarea>
+
+        <button type="submit" class="submit-btn">Send Message</button>
+      </form>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="footer fade-in">
+  <p>© 2026 Eco-Tracker • For a Greener Digital World</p>
+</footer>
+
+<script src="{{ url_for('static', filename='contact.js') }}"></script>
+</div>
+</body>
+</html>

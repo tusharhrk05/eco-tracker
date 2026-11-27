@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco-Tracker | How It Works</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='work.css') }}">
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <!-- JPG LOGO OPTION -->
+    <div class="logo-area">
+      <img src="{{ url_for('static', filename='Logo.png') }}" class="logo-img"
+           alt="Eco-Tracker Logo"
+           onerror="this.style.display='none'">
+    </div>
+
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/work" class="active">How It Works</a>
+    </nav>
+
+  </header>
+
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+
+    <span class="badge">Methodology</span>
+
+    <h1>How It Works</h1>
+
+    <p>
+      Understand the science and data-driven impact behind your daily digital footprint.
+    </p>
+
+  </section>
+
+
+  <!-- STEPS SECTION -->
+  <section class="steps">
+
+    <!-- STEP 1 -->
+    <div class="step-card">
+
+      <!-- JPG IMAGE OPTION -->
+      <h3>1. Input Your Activity</h3>
+
+      <p>
+        Log your monthly digital habits, including streaming, meetings, gaming,
+        and social media usage.
+      </p>
+    </div>
+
+
+    <!-- STEP 2 -->
+    <div class="step-card">
+
+      <!-- JPG IMAGE OPTION -->
+      <h3>2. Carbon Calculation</h3>
+
+      <p>
+        Our algorithm applies emission factors from the IEA and Shift Project to
+        convert your digital activity into CO₂ impact.
+      </p>
+    </div>
+
+
+    <!-- STEP 3 -->
+    <div class="step-card">
+
+      <!-- JPG IMAGE OPTION -->
+      <h3>3. Analyze & Improve</h3>
+
+      <p>
+        Compare your footprint against sustainable limits and receive actionable
+        tips for greener habits.
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- FINAL CTA -->
+  <section class="cta">
+
+    <h2>Ready to see your impact?</h2>
+
+    <p>
+      Start your journey towards a carbon-neutral digital footprint today.
+    </p>
+
+    <div class="cta-buttons">
+      <a href="/m" class="btn-primary">Start Calculating</a>
+      <a href="/analytics" class="btn-secondary">View Analytics</a>
+    </div>
+
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2024 Eco-Tracker Initiative. All rights reserved.</p>
+  </footer>
+
+</div>
+
+<script src="{{ url_for('static', filename='work.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eco-Tracker Calculator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: Inter, sans-serif;
+  background: #f6f8f6;
+  margin: 0;
+}
+
+.layout {
+  background: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)),
+              url("background.avif");
+  background-size: cover;
+}
+
+.header {
+  padding: 20px 40px;
+}
+
+.logo-img {
+  width: 100px;
+  height: 100px;
+}
+
+.main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 32px;
+}
+
+.page-title {
+  text-align: center;
+  color: #22c55e;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 24px;
+}
+
+.card {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  font-weight: 800;
+  background: #2bee6c;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.svg-gauge {
+  width: 260px;
+  margin: auto;
+}
+
+#gaugeArc {
+  transition: stroke-dashoffset 1s ease;
+}
+
+#needle {
+  transition: transform .6s ease;
+}
+
+.co2-value {
+  text-align: center;
+}
+
+.progress {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+#progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #22c55e;
+  border-radius: 10px;
+}
+
+.legend-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 6px;
+}
+
+.legend-bar div {
+  height: 100%;
+  width: 0%;
+  background: #22c55e;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+<header class="header">
+  <img src="Logo.png" class="logo-img">
+</header>
+
+<main class="main">
+
+<section class="page-title">
+  <h1>Eco-Tracker Calculator</h1>
+  <p>Automatic Digital Carbon Footprint Tracking</p>
+</section>
+
+<div class="grid">
+
+<div class="card">
+  <h2>Automatic Tracking</h2>
+  <button onclick="startTracking()">Start Tracking</button><br><br>
+  <button onclick="stopTracking()">Stop & Show Report</button>
+</div>
+
+<div class="card">
+  <h2>Monthly CO₂ Emissions</h2>
+
+  <div class="svg-gauge">
+    <svg viewBox="0 0 200 110">
+      <path d="M20 100 A80 80 0 0 1 180 100"
+            stroke="#e5e7eb" stroke-width="16" fill="none"/>
+      <path id="gaugeArc"
+            d="M20 100 A80 80 0 0 1 180 100"
+            stroke="#22c55e" stroke-width="16"
+            stroke-dasharray="251" stroke-dashoffset="251"
+            fill="none"/>
+      <line id="needle" x1="100" y1="100" x2="100" y2="30"
+            stroke="#111" stroke-width="3"
+            transform-origin="100px 100px"/>
+    </svg>
+  </div>
+
+  <div class="co2-value">
+    <span id="result">0.0</span> kg CO₂
+  </div>
+
+  <div class="progress">
+    <div id="progress-bar"></div>
+  </div>
+</div>
+
+<div class="card" style="grid-column: span 2;">
+  🌱 <span id="treeEquivalent">
+    Your footprint is equivalent to 0 trees per year.
+  </span>
+</div>
+
+</div>
+</main>
+
+<footer class="footer">
+  © 2026 Eco-Tracker Final Year Project
+</footer>
+
+<script>
+function startTracking(){
+  fetch("/start", {method: "POST"})
+    .then(async response => {
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error);
+      alert(result.message);
+    })
+    .catch(error => alert(error.message || "Could not start tracking."));
+}
+
+function stopTracking(){
+  fetch("/stop", {method: "POST"})
+    .then(() => fetchData())
+    .catch(() => alert("Could not pause tracking."));
+}
+
+function fetchData(){
+  fetch("/data")
+    .then(res => res.json())
+    .then(data => processData(data));
+}
+
+function processData(apps){
+  let totalMinutes = 0;
+  for(let a in apps) totalMinutes += apps[a];
+
+  let co2 = (totalMinutes * 0.02).toFixed(2);
+  document.getElementById("result").innerText = co2;
+
+  let percent = Math.min((co2 / 20) * 100, 100);
+  document.getElementById("gaugeArc").style.strokeDashoffset =
+    251 - (251 * percent / 100);
+
+  document.getElementById("needle").style.transform =
+    `rotate(${percent*1.8 - 90}deg)`;
+
+  document.getElementById("progress-bar").style.width = percent + "%";
+
+  document.getElementById("treeEquivalent").innerText =
+    `Your footprint is equivalent to ${(co2/21).toFixed(1)} trees per year.`;
+}
+</script>
+
+</div>
+</body>
+</html>

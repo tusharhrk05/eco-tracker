@@ -1,0 +1,8 @@
+{% if sample_record_count %}
+<div role="note" style="max-width:1040px;margin:18px auto 0;padding:12px 16px;border:1px solid #b9e8ca;border-radius:12px;background:#effbf2;color:#21643b;font-size:14px;line-height:1.5;">
+  Analysis includes {{ sample_record_count }} synthetic sample records across {{ sample_app_count }} app categories.
+  {% if sample_month_unsafe %}
+    <strong style="display:block;margin-top:6px;color:#991b1b;">UNSAFE SAMPLE SCENARIO: {{ sample_month_co2_kg }} kg CO₂e this month exceeds the {{ monthly_limit_kg }} kg limit.</strong>
+  {% endif %}
+</div>
+{% endif %}
